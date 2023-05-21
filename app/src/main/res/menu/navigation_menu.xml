@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/notes_nav"
+        android:title="Notes"
+        android:icon="@drawable/icon_notes_nav"/>
+
+    <item android:id="@+id/notification_nav"
+        android:title="Notifications"
+        android:icon="@drawable/icon_notification"/>
+
+    <item android:id="@+id/settings_nav"
+        android:title="Settings"
+        android:icon="@drawable/icon_settings"/>
+</menu>
