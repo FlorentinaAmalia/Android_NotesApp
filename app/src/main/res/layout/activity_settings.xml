@@ -50,6 +50,13 @@
                 android:gravity="center"/>
         </LinearLayout>
 
+        <Button
+            android:layout_marginTop="30dp"
+            android:id="@+id/button_SignOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sign out"/>
+
     </LinearLayout>
     <FrameLayout
         android:id="@+id/container_nav"

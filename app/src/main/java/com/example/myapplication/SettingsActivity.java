@@ -10,9 +10,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Switch;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.ktx.Firebase;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -22,6 +25,8 @@ public class SettingsActivity extends AppCompatActivity {
     boolean nightMode;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+
+    Button buttonSignOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,25 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             }
         });
+
+
+
+        buttonSignOut = findViewById(R.id.button_SignOut);
+        buttonSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create an Intent to navigate back to the main activity
+                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                intent.putExtra("logout", true);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
+
+
+
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         bottomNavigationView.setSelectedItemId(R.id.settings_nav);

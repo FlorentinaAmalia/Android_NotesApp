@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +51,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        boolean logout = getIntent().getBooleanExtra("logout", false);
+        if (logout) {
+            // Perform the logout action
+            FirebaseAuth.getInstance().signOut();
+            // Add any additional actions you want to perform after logout
+            // For example, you can navigate to the login activity
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
 
 
         bottomNavigationView =findViewById(R.id.bottom_nav);
