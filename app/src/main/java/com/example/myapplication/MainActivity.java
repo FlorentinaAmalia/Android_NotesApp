@@ -1,12 +1,14 @@
 package com.example.myapplication;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
@@ -19,6 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,9 +49,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     BottomNavigationView bottomNavigationView;
 
 
-
-
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,13 +56,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
         boolean logout = getIntent().getBooleanExtra("logout", false);
         if (logout) {
-            // Perform the logout action
             FirebaseAuth.getInstance().signOut();
-            // Add any additional actions you want to perform after logout
-            // For example, you can navigate to the login activity
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
             finish();
         }
+
 
 
         bottomNavigationView =findViewById(R.id.bottom_nav);
@@ -73,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         return true;
                     case R.id.settings_nav:
                         startActivity(new Intent(getApplicationContext(),SettingsActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.notification_nav:
+                        startActivity(new Intent(getApplicationContext(),NotificationsActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }
@@ -95,18 +99,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             }
         });
 
-//        searchView_home.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String s) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String s) {
-//                filter(s);
-//                return true;
-//            }
-//        });
     }
 
     private void filter(String s){
@@ -180,29 +172,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()){
-            case R.id.pin:
-                if (selectedNote.isPinned()){
-                    database.notesDAO().pin(selectedNote.getID(), false);
-                    Toast.makeText(MainActivity.this, "Unpinned", Toast.LENGTH_SHORT);
-                } else {
-                    database.notesDAO().pin(selectedNote.getID(), true);
-                    Toast.makeText(MainActivity.this, "Pinned", Toast.LENGTH_SHORT);
-                }
-                notes.clear();
-                notes.addAll(database.notesDAO().getAll());
-                notesListAdapter.notifyDataSetChanged();
-                return true;
+        database.notesDAO().delete(selectedNote);
+        notes.remove(selectedNote);
+        notesListAdapter.notifyDataSetChanged();
+        Toast.makeText(MainActivity.this, "Note deleted", Toast.LENGTH_SHORT);
+        return true;
 
-            case R.id.delete:
-                database.notesDAO().delete(selectedNote);
-                notes.remove(selectedNote);
-                notesListAdapter.notifyDataSetChanged();
-                Toast.makeText(MainActivity.this, "Note deleted", Toast.LENGTH_SHORT);
-                return true;
-
-            default:
-                return false;
-        }
     }
+
+
 }

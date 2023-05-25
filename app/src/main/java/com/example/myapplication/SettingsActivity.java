@@ -13,6 +13,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Switch;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.ktx.Firebase;
@@ -28,10 +34,30 @@ public class SettingsActivity extends AppCompatActivity {
 
     Button buttonSignOut;
 
+
+
+
+
+    GoogleSignInOptions googleSignInOptions;
+    GoogleSignInClient googleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+
+
+        googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        googleSignInClient = GoogleSignIn.getClient(this,googleSignInOptions);
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+
+
+
+
+
 
         getSupportActionBar().hide();
         aSwitch = findViewById(R.id.switch_mode);
@@ -64,17 +90,36 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         buttonSignOut = findViewById(R.id.button_SignOut);
+
         buttonSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Create an Intent to navigate back to the main activity
-                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-                intent.putExtra("logout", true);
-                startActivity(intent);
-                finish();
+                // Firebase Authentication Logout
+                FirebaseAuth.getInstance().signOut();
+
+                // Google Sign-In Logout
+                if (account != null) {
+                    googleSignInClient.signOut().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(Task<Void> task) {
+                            // Perform any additional actions after sign-out
+                            // For example, you can navigate to the main activity
+                            Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                            intent.putExtra("logout", true);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                } else {
+                    // Perform any additional actions after sign-out
+                    // For example, you can navigate to the main activity
+                    Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                    intent.putExtra("logout", true);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
-
 
 
 
@@ -90,6 +135,10 @@ public class SettingsActivity extends AppCompatActivity {
                         return true;
                     case R.id.notes_nav:
                         startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.notification_nav:
+                        startActivity(new Intent(getApplicationContext(),NotificationsActivity.class));
                         overridePendingTransition(0,0);
                         return true;
                 }

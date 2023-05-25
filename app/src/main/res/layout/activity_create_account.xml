@@ -61,6 +61,7 @@
             style="@style/TEXT"
             android:background="@drawable/rounded_corner"
             android:textSize="20sp"
+            android:inputType="textPassword"
             android:padding="16dp"
             android:layout_marginBottom="16dp"/>
 
@@ -72,6 +73,7 @@
             android:hint="@string/confirm_password"
             android:background="@drawable/rounded_corner"
             android:textSize="20sp"
+            android:inputType="textPassword"
             android:padding="16dp"
             android:layout_marginBottom="16dp"/>
 
@@ -93,6 +95,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/container_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/form_CreateAccount"
@@ -112,6 +115,34 @@
             android:textStyle="bold"
             android:layout_marginLeft="5dp"/>
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/google"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/google_button"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/container_login"/>
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/container_login"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:gravity="center">-->
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="Continue using "-->
+<!--        android:gravity="center"/>-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/google"-->
+<!--            android:layout_width="50dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:src="@drawable/google_button"-->
+<!--            android:layout_centerHorizontal="true"/>-->
+<!--    </LinearLayout>-->
 
 </RelativeLayout>
 </ScrollView>

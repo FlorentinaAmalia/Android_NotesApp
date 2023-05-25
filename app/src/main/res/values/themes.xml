@@ -29,6 +29,11 @@
     </style>
 
 
+    <style name="NOTE">
+        <item name="android:background">#50B9E8</item>
+        <item name="android:textColor">#000</item>
+    </style>
+
 <!--    <style name="Theme.MyApplicationNoteActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
 <!--        &lt;!&ndash; Primary brand color. &ndash;&gt;-->
 <!--        <item name="colorPrimary">@color/purple_500</item>-->
